@@ -1,0 +1,67 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+  text-decoration: underline;
+  text-decoration-color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.returnSentences,
+.catchUsed {
+  overflow-y: scroll;
+  position: fixed;
+  width: 300px;
+  height: 400px;
+  border: white solid 1rem;
+  background-color: white;
+  color: black;
+}
+
+.returnSentences {
+  left: 550px;
+  top: 30px;
+}
+.returnSentences::before {
+  content: "Originals";
+}
+
+.catchUsed {
+  right: 50px;
+  top: 30px;
+}
+
+.catchUsed::before {
+  content: "Catch";
+}
+
+button:not(.span-button) {
+  margin-top: 10px;
+  width: 6rem;
+  display: flex;
+  flex-direction: column;
+}
+
+button:active {
+  color: red;
+}
+
+.result-sentence-info:hover {
+  cursor: pointer;
+}
