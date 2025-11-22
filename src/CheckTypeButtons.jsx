@@ -11,7 +11,12 @@ export default function CheckTypeButtons({ onSelect }) {
         <button
           key={opt}
           value={opt.toLowerCase()}
-          onClick={() => onSelect(opt)} // original line
+          // onClick={() => onSelect(opt)} // original line
+          onClick={() => {
+            setTimeout(() => {
+              onSelect(opt);
+            }, 250);
+          }}
         >
           {opt}
         </button>
@@ -20,4 +25,4 @@ export default function CheckTypeButtons({ onSelect }) {
   );
 }
 
-// disable button after one click => prop with disabled={clicked} << new state
+// disable button after one click => prop with disabled={clicked} << new state  DONE

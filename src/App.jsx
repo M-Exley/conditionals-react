@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { sentences } from "./SentencesV1";
-import ReturnAllSentences from "./ReturnAllSentence";
 import CatchUsedSentences from "./CatchUsedSentences";
 import CheckTypeButtons from "./CheckTypeButtons";
+import Modal from "./modal";
 
 export default function App() {
   const [originalSentences, setOriginalSentences] = useState(sentences);
@@ -32,7 +32,7 @@ export default function App() {
     },
   });
 
-   useEffect(() => {
+  useEffect(() => {
     if (playerAnswered === true) {
       setPlayerAnswered(true);
     }
@@ -101,12 +101,15 @@ export default function App() {
 
     const newIDis = newSentence.info.id;
 
-    setCurrentSentence({
-      sentence: newSentence.info.sentence,
-      id: newIDis,
-      condition: newSentence.condition.if,
-      type: newSentence.info.type,
-    });
+    setTimeout(() => {
+      setCurrentSentence({
+        sentence: newSentence.info.sentence,
+        id: newIDis,
+        condition: newSentence.condition.if,
+        type: newSentence.info.type,
+      });
+    }, 250);
+
     setUsedSentences((prev) => [...prev, newSentence]);
     setOriginalSentences((prev) =>
       prev.filter((sentence) => sentence.info.id !== newIDis)
@@ -142,11 +145,6 @@ export default function App() {
     <div className="container">
       <h2>Conditional Sentences V2</h2>
       <div>
-        <ReturnAllSentences
-          sentences={originalSentences}
-          count={originalSentences.length}
-        />
-
         <p>
           Sentence: <strong>{currentSentence.sentence} </strong>
         </p>
@@ -162,12 +160,13 @@ export default function App() {
             />
           )}
         </div>
-        <CatchUsedSentences
-          sentences={usedSentences}
-          count={usedSentences.length}
-        />
-        {/* <p>Sentences generated: {count}</p> */}
-        {/* <p>Sentence ID: {currentSentence.id} </p> */}
+        {/* {copySentences.length === 0 && (
+          <CatchUsedSentences
+            sentences={usedSentences}
+            count={usedSentences.length}
+          />
+        )} */}
+
         <p>
           {currentSentence.sentence && (
             <>
@@ -188,11 +187,11 @@ export default function App() {
           )}
         </p>
         <p>
-          {currentSentence.type !== undefined ? (
+          {currentSentence.type !== undefined && !playerAnswered ? (
             <>
               {" "}
-              Conditional Type:{" "}
-              <span>
+              Conditional Trigger:{" "}
+              <span title="This is the phrase that causes the conditional">
                 {!currentSentence.hint ? (
                   <button onClick={handleHint} className="span-button">
                     Get Hint
@@ -208,14 +207,18 @@ export default function App() {
             </>
           ) : (
             <>
+              {" "}
               Type of Conditional: This is{" "}
-              <strong>{convertType(currentSentence.type)}</strong> conditional{" "}
+              <strong>
+                {convertType(currentSentence.type)}
+              </strong> conditional{" "}
             </>
           )}
         </p>
 
-        <p>{recordScore.score}</p>
+        <p>Score: {recordScore.score}</p>
         <p>{playerAnswered ? "Answered: True" : "Answered: False"}</p>
+        <Modal />
       </div>
     </div>
   );
