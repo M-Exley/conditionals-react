@@ -23,9 +23,8 @@ h2 {
   flex-direction: column;
 }
 
-.returnSentences,
-.catchUsed {
-  overflow-y: scroll;
+.catchIncorrect {
+  overflow-y: auto;
   position: fixed;
   width: 300px;
   height: 400px;
@@ -96,4 +95,12 @@ a {
 .bi-cloud-rain {
   background-color: white;
   color: white;
+}
+
+.finish-overlay {
+  width: 100vw;
+  height: 100vh;
+  background-color: #242424;
+  z-index: 1000;
+  text-align: center;
 }

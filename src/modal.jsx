@@ -6,26 +6,17 @@ export default function Modal() {
       <div className="modal-help">
         <h4>Conditional Sentences Constructor</h4>
         <p>
-          This is the first version of a collection of projects based on
-          conditional sentences in English. Different types of conditional
-          sentences are often overlooked in favour of simply teaching the 'if'
-          variant. However, in spoken English conditionals may go unnoticed in a
-          real conversation by those not native to the language who are not
+          This is the second version of a project based on conditional sentences
+          in English. Different types of conditional sentences are often
+          overlooked in favour of simply teaching the basic 'if' variant.
+          However, in spoken English conditionals may go unnoticed in a real
+          conversation by those who are not native to the language and are not
           accustomed to the variants.
         </p>
         <br />
         <p>
-          In this simple version, conditional sentences are presented in a
-          visual way by using purple and orange for the [condition] and
-          [result], respectively. It should be used as secondary material once
-          all conditional sentences and their variants have been taught as it
-          contains a lot of obscure examples.
-        </p>
-        <br />
-        <p>
-          The tasks begin automatically but it would be a good idea to use the
-          first one as an example to show the students that there is a timer.
-          They should identify the type of sentence:
+          They should identify the type of sentence as below and select the
+          corresponding option:
         </p>
         <br />
 

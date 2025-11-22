@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { sentences } from "./SentencesV1";
-import CatchUsedSentences from "./CatchUsedSentences";
+import CatchIncorrectAnswers from "./CatchIncorrectAnswers";
 import CheckTypeButtons from "./CheckTypeButtons";
 import Modal from "./modal";
+// import CatchIncorrectSentences from "./CatchIncorrectAnswers";
 
 export default function App() {
   const [originalSentences, setOriginalSentences] = useState(sentences);
@@ -22,10 +23,8 @@ export default function App() {
   const [correctAnswer, setCorrectAnswer] = useState(undefined);
   const [recordScore, setRecordScore] = useState({
     score: 0,
-    correct: {
-      number: 0,
-      answers: [],
-    },
+    finished: false,
+
     incorrect: {
       number: 0,
       answers: [],
@@ -62,6 +61,7 @@ export default function App() {
 
     if (buttonSelected.toLowerCase() === convert) {
       setCorrectAnswer(true);
+      setPlayerAnswered(true);
       setRecordScore((prev) => ({
         ...prev,
         score: prev.score + 1,
@@ -72,6 +72,13 @@ export default function App() {
     } else {
       setPlayerAnswered(true);
       setCorrectAnswer(false);
+      setRecordScore((prev) => ({
+        ...prev,
+        incorrect: {
+          number: prev.incorrect.number + 1,
+          answers: [...prev.incorrect.answers, currentSentence.sentence], // append new answer
+        },
+      }));
       console.log(correctAnswer);
       return;
     }
@@ -93,6 +100,10 @@ export default function App() {
 
     if (copySentences.length === 0) {
       alert("All completed");
+      setRecordScore((prev) => ({
+        ...prev,
+        finished: true,
+      }));
       return;
     }
 
@@ -141,85 +152,97 @@ export default function App() {
     }));
   };
 
-  return (
-    <div className="container">
-      <h2>Conditional Sentences V2</h2>
-      <div>
-        <p>
-          Sentence: <strong>{currentSentence.sentence} </strong>
-        </p>
+  if (!recordScore.finished) {
+    return (
+      <div className="container">
+        <h2>Conditional Sentences V2</h2>
+        <div>
+          <p>
+            Sentence: <strong>{currentSentence.sentence} </strong>
+          </p>
 
-        <div className="buttonsAction">
-          <button onClick={getSentenceFromArray}>
-            {count === 0 ? "Get Sentence" : "Next Sentence"}
-          </button>
+          <div className="buttonsAction">
+            <button onClick={getSentenceFromArray}>
+              {count === 0 ? "Get Sentence" : "Next Sentence"}
+            </button>
 
-          {!playerAnswered && (
-            <CheckTypeButtons
-              onSelect={setButtonSelected} // what is this doing?
-            />
-          )}
-        </div>
-        {/* {copySentences.length === 0 && (
+            {!playerAnswered && (
+              <CheckTypeButtons
+                onSelect={setButtonSelected} // what is this doing?
+              />
+            )}
+          </div>
+          {/* {copySentences.length === 0 && (
           <CatchUsedSentences
             sentences={usedSentences}
             count={usedSentences.length}
           />
         )} */}
 
-        <p>
-          {currentSentence.sentence && (
-            <>
-              {correctAnswer === undefined ? (
-                "Question Not attempted"
-              ) : correctAnswer ? (
-                <>
-                  <strong style={{ color: "green" }}>Correct</strong>: this is{" "}
-                  {convertType(currentSentence.type)} conditional.
-                </>
-              ) : (
-                <>
-                  <strong style={{ color: "red" }}>Incorrect</strong>: this is{" "}
-                  {convertType(currentSentence.type)} conditional.
-                </>
-              )}
-            </>
-          )}
-        </p>
-        <p>
-          {currentSentence.type !== undefined && !playerAnswered ? (
-            <>
-              {" "}
-              Conditional Trigger:{" "}
-              <span title="This is the phrase that causes the conditional">
-                {!currentSentence.hint ? (
-                  <button onClick={handleHint} className="span-button">
-                    Get Hint
-                  </button>
+          <p>
+            {currentSentence.sentence && (
+              <>
+                {correctAnswer === undefined ? (
+                  "Question Not attempted"
+                ) : correctAnswer ? (
+                  <>
+                    <strong style={{ color: "green" }}>Correct</strong>: this is{" "}
+                    {convertType(currentSentence.type)} conditional.
+                  </>
                 ) : (
                   <>
-                    <strong style={{ textDecoration: "underline" }}>
-                      {currentSentence.condition}
-                    </strong>
+                    <strong style={{ color: "red" }}>Incorrect</strong>: this is{" "}
+                    {convertType(currentSentence.type)} conditional.
                   </>
                 )}
-              </span>
-            </>
-          ) : (
-            <>
-              {" "}
-              Type of Conditional: This is{" "}
-              <strong>
-                {convertType(currentSentence.type)}
-              </strong> conditional{" "}
-            </>
-          )}
-        </p>
+              </>
+            )}
+          </p>
+          <p>
+            {currentSentence.type !== undefined && !playerAnswered ? (
+              <>
+                {" "}
+                Conditional Trigger:{" "}
+                <span title="This is the phrase that causes the conditional">
+                  {!currentSentence.hint ? (
+                    <button onClick={handleHint} className="span-button">
+                      Get Hint
+                    </button>
+                  ) : (
+                    <>
+                      <strong style={{ textDecoration: "underline" }}>
+                        {currentSentence.condition}
+                      </strong>
+                    </>
+                  )}
+                </span>
+              </>
+            ) : (
+              <>
+                {" "}
+                Type of Conditional: This is{" "}
+                <strong>
+                  {convertType(currentSentence.type)}
+                </strong> conditional{" "}
+              </>
+            )}
+          </p>
 
-        <p>Score: {recordScore.score}</p>
-        <p>{playerAnswered ? "Answered: True" : "Answered: False"}</p>
-        <Modal />
+          <p>Score: {recordScore.score}</p>
+          <p>{playerAnswered ? "Answered: True" : "Answered: False"}</p>
+          <Modal />
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="finish-overlay">
+        <h1>FINISHED</h1>
+        <div className="result">
+          <p>Here are the questions which you got incorrect</p>
+          <CatchIncorrectAnswers sentences={recordScore.incorrect.answers} />
+        </div>
+      </div>
+    );
+  }
 }
