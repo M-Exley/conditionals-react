@@ -29,31 +29,32 @@ This time around I have been thinking more about the logical consequences of jum
 - more simplified logic compared to Vanilla project
 - scalability has been considered and works nicely on this small project
 
-Link to V1 with Vanilla JS:
-Link to V2 with React:
+:link: Link to V1 with Vanilla JS: https://conditional-sentences.netlify.app/
+
+:link: Link to V2 with React:
 
 ## Screenshots
 
 ### Initial Desktop
 
-![What the client would first see when they visit the site on desktop.](/src/screenshots/screenshot-initial.png)
+![What the client would first see when they visit the site on desktop.](./src/screenshots/screenshot-initial.png)
 
 ### Initial Mobile
 
-![What the client would first see when they visit the site on mobile.](/src/screenshots/screenshot-mobile.png)
+![What the client would first see when they visit the site on mobile.](./src/screenshots/screenshot-mobile.png)
 
 ### Question Hint
 
-![What the client would first see when they ask for a hint.](/src/screenshots/screenshot-hint.png)
+![What the client would first see when they ask for a hint.](./src/screenshots/screenshot-hint.png)
 
 ### Correct
 
-![What the client would first see when they answer correctly.](/src/screenshots/screenshot-correct.png)
+![What the client would first see when they answer correctly.](./src/screenshots/screenshot-correct.png)
 
 ### Incorrect
 
-![What the client would first see when they answer incorrectly.](/src/screenshots/screenshot-incorrect.png)
+![What the client would first see when they answer incorrectly.](./src/screenshots/screenshot-incorrect.png)
 
 ### Finished
 
-![What the client would first see when they have finished.](/src/screenshots/screenshot-mobile.png)
+![What the client would first see when they have finished.](./src/screenshots/screenshot-finished.png)

@@ -4,7 +4,6 @@ import { sentences } from "./SentencesV1";
 import CatchIncorrectAnswers from "./CatchIncorrectAnswers";
 import CheckTypeButtons from "./CheckTypeButtons";
 import Modal from "./modal";
-// import CatchIncorrectSentences from "./CatchIncorrectAnswers";
 
 export default function App() {
   const [originalSentences, setOriginalSentences] = useState(sentences);
@@ -21,8 +20,9 @@ export default function App() {
   const [count, setCount] = useState(0);
   const [buttonSelected, setButtonSelected] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState(undefined);
-  const [recordScore, setRecordScore] = useState({
+  const [recordGame, setRecordGame] = useState({
     score: 0,
+    begun: false,
     finished: false,
 
     incorrect: {
@@ -32,59 +32,48 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (playerAnswered === true) {
-      setPlayerAnswered(true);
-    }
-  }, [playerAnswered]);
-
-  useEffect(() => {
     if (!usedSentences) return;
-    // console.log("Used sentences", usedSentences);
   }, [usedSentences]);
 
   useEffect(() => {
     if (!buttonSelected) {
       return;
     }
-    // console.log("button pressed:", buttonSelected);
-    console.log("Sentence Type", currentSentence.type);
   }, [buttonSelected]);
 
   useEffect(() => {
     if (!buttonSelected) return;
     //currentSentence.type convert to word
     const convert = convertType(currentSentence.type);
-    console.log("convert", convert);
-    console.log("button changed to:", buttonSelected);
-
-    // buttonSelected convert to lowerCase
 
     if (buttonSelected.toLowerCase() === convert) {
       setCorrectAnswer(true);
       setPlayerAnswered(true);
-      setRecordScore((prev) => ({
+      setRecordGame((prev) => ({
         ...prev,
         score: prev.score + 1,
       }));
       setPlayerAnswered(true);
-      console.log(correctAnswer);
       return;
     } else {
       setPlayerAnswered(true);
       setCorrectAnswer(false);
-      setRecordScore((prev) => ({
+      setRecordGame((prev) => ({
         ...prev,
         incorrect: {
           number: prev.incorrect.number + 1,
-          answers: [...prev.incorrect.answers, currentSentence.sentence], // append new answer
+          answers: [...prev.incorrect.answers, currentSentence.sentence], // push new incorrect answer
         },
       }));
-      console.log(correctAnswer);
       return;
     }
   }, [buttonSelected]);
 
   const getSentenceFromArray = () => {
+    setRecordGame((prev) => ({
+      ...prev,
+      begun: true,
+    }));
     setPlayerAnswered(false);
     setCorrectAnswer(undefined);
     setButtonSelected("");
@@ -94,17 +83,18 @@ export default function App() {
     }));
 
     let copySentences = [...originalSentences]; // not necessary when using filter/map. Only sort or change
-    // console.log(copySentences);
 
     if (!currentSentence) return;
 
     if (copySentences.length === 0) {
-      alert("All completed");
-      setRecordScore((prev) => ({
-        ...prev,
-        finished: true,
-      }));
-      return;
+      setTimeout(() => {
+        console.log("All completed");
+        setRecordGame((prev) => ({
+          ...prev,
+          finished: true,
+        }));
+        return;
+      }, 700);
     }
 
     const newSentence =
@@ -145,14 +135,13 @@ export default function App() {
   };
 
   const handleHint = () => {
-    console.log("Hint requested");
     setCurrentSentence((prev) => ({
       ...prev,
       hint: true,
     }));
   };
 
-  if (!recordScore.finished) {
+  if (!recordGame.finished) {
     return (
       <div className="container">
         <h2>Conditional Sentences V2</h2>
@@ -162,28 +151,20 @@ export default function App() {
           </p>
 
           <div className="buttonsAction">
-            <button onClick={getSentenceFromArray}>
+            <button className="next-sentence" onClick={getSentenceFromArray}>
               {count === 0 ? "Get Sentence" : "Next Sentence"}
             </button>
 
             {!playerAnswered && (
-              <CheckTypeButtons
-                onSelect={setButtonSelected} // what is this doing?
-              />
+              <CheckTypeButtons onSelect={setButtonSelected} />
             )}
           </div>
-          {/* {copySentences.length === 0 && (
-          <CatchUsedSentences
-            sentences={usedSentences}
-            count={usedSentences.length}
-          />
-        )} */}
 
           <p>
             {currentSentence.sentence && (
               <>
                 {correctAnswer === undefined ? (
-                  "Question Not attempted"
+                  "Select answer"
                 ) : correctAnswer ? (
                   <>
                     <strong style={{ color: "green" }}>Correct</strong>: this is{" "}
@@ -199,7 +180,7 @@ export default function App() {
             )}
           </p>
           <p>
-            {currentSentence.type !== undefined && !playerAnswered ? (
+            {currentSentence.type !== undefined && !playerAnswered && (
               <>
                 {" "}
                 Conditional Trigger:{" "}
@@ -217,20 +198,11 @@ export default function App() {
                   )}
                 </span>
               </>
-            ) : (
-              <>
-                {" "}
-                Type of Conditional: This is{" "}
-                <strong>
-                  {convertType(currentSentence.type)}
-                </strong> conditional{" "}
-              </>
             )}
           </p>
 
-          <p>Score: {recordScore.score}</p>
-          <p>{playerAnswered ? "Answered: True" : "Answered: False"}</p>
-          <Modal />
+          <p>Score: {recordGame.score}</p>
+          {!recordGame.begun && <Modal />}
         </div>
       </div>
     );
@@ -240,8 +212,14 @@ export default function App() {
         <h1>FINISHED</h1>
         <div className="result">
           <p>Here are the questions which you got incorrect</p>
-          <CatchIncorrectAnswers sentences={recordScore.incorrect.answers} />
+          <CatchIncorrectAnswers
+            sentences={recordGame.incorrect.answers}
+            count={recordGame.incorrect.number}
+          />
+          <button onClick={() => location.reload()}>Reload</button>
+          <br />
         </div>
+        <Modal />
       </div>
     );
   }
