@@ -31,7 +31,10 @@ This time around I have been thinking more about the logical consequences of jum
 
 :link: Link to V1 with Vanilla JS: https://conditional-sentences.netlify.app/
 
-:link: Link to V2 with React: pending deployment
+:link: Link to V2 with React: https://conditionals-sentences-react.netlify.app/
+
+> [!WARNING]
+> Mobile Buttons need to be optimised
 
 ## Screenshots
 
