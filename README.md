@@ -31,7 +31,7 @@ This time around I have been thinking more about the logical consequences of jum
 
 :link: Link to V1 with Vanilla JS: https://conditional-sentences.netlify.app/
 
-:link: Link to V2 with React:
+:link: Link to V2 with React: pending deployment
 
 ## Screenshots
 
@@ -41,7 +41,7 @@ This time around I have been thinking more about the logical consequences of jum
 
 ### Initial Mobile
 
-![What the client would first see when they visit the site on mobile.](./src/screenshots/screenshot-mobile.png)
+![What the client would first see when they visit the site on mobile.](./src/screenshots/screenshot-init-mobile.png)
 
 ### Question Hint
 
